@@ -1,7 +1,8 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-collince is owner of this repository
+collince is owner of this repository.
+this is new branch master2
 
 ## Available Scripts
 
