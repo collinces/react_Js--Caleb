@@ -32,14 +32,12 @@ function Definition() {
 
     fetch(url)
       .then((response) => {
-        //sconsole.log(response.status);
-
         if (response.status === 404) {
           console.log(response.status);
 
           setNotfound(true);
         } else if (response.status === 401) {
-          navigate("/login");
+          navigate("/login/");
         } else if (response.status === 500) {
           setServerError(true);
         }
@@ -80,7 +78,7 @@ function Definition() {
         <>
           <h1>definition of word typed here: </h1>
           <h1>github fun </h1>
-           <h1>master 2 branch  </h1>
+          <h1>master 2 branch </h1>
 
           {word.map((meaning) => {
             return (

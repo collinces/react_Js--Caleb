@@ -125,8 +125,8 @@ function AddEmployee(props) {
 
         <Modal.Footer>
           <button
-            form="editmodal" // we pass the form id to button tag so our button can have an effet to the form
-            className="bg-slate-400 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded"
+            // form="editmodal" // we pass the form id to button tag so our button can have an effet to the form
+            //className="bg-slate-400 hover:bg-slate-500 text-white font-bold py-2 px-4 rounded"
             onClick={handleClose}
           >
             Close

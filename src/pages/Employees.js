@@ -30,7 +30,7 @@ function Employees() {
   // this function uptadates the employee infos entered from EditEmployee
 
   function updateEmployee(id, newName, newRole) {
-    console.log("update employee attribut values in app.js");
+    console.log("update employee attribut values in Employees.js");
 
     const updatedEmployees = employees.map((employee) => {
       if (id == employee.id) {

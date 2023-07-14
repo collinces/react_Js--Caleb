@@ -1,5 +1,4 @@
 import "./index.css";
-import { useState } from "react";
 import Header from "./components/Header";
 
 import Employees from "./pages/Employees";
@@ -13,6 +12,7 @@ import Dictionary from "./pages/Dictionary";
 import Definition from "./pages/Definition";
 
 import NotFound from "./components/NotFound";
+import Customer from "./pages/Customer";
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/employees" element={<Employees />} />
             <Route path="/Customers" element={<Customers />} />
+            <Route path="/Customers/:id" element={<Customer />} />
             <Route path="/Dictionary" element={<Dictionary />} />
 
             <Route path="/Dictionary/:search" element={<Definition />} />
