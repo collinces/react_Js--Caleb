@@ -36,7 +36,7 @@ function Employees() {
       if (id == employee.id) {
         // id is used to identify which employee info is modified
 
-        return { ...employee, name: newName, role: newRole }; //returning each object of employee's array using spreading techniq
+        return { ...employee, name: newName, role: newRole }; //returning each  employee object using spreading techniq
       }
 
       return employee;

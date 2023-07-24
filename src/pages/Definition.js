@@ -77,8 +77,6 @@ function Definition() {
       {word ? (
         <>
           <h1>definition of word typed here: </h1>
-          <h1>github fun </h1>
-          <h1>master 2 branch </h1>
 
           {word.map((meaning) => {
             return (
