@@ -57,21 +57,25 @@ function Customers() {
   return (
     <div>
       <h1>list of customers and their industries</h1>
-      <ul>
-        {customers ? (
-          <>
-            {customers.map((customer) => {
-              return (
-                <li key={customer.id}>
-                  <Link to={"/Customers/" + customer.id}>{customer.name}</Link>:
-                </li>
-              );
-            })}
-          </>
-        ) : (
-          <p>loadind...</p>
-        )}
-      </ul>
+
+      {customers ? (
+        <>
+          {customers.map((customer) => {
+            return (
+              <div className="m-2" key={customer.id}>
+                <Link to={"/Customers/" + customer.id}>
+                  <button className=" no-underline bg-blue-600 hover:bg-gray-700 text-white font-bold py-2 px-3 rounded">
+                    {customer.name}
+                  </button>
+                </Link>
+              </div>
+            );
+          })}
+        </>
+      ) : (
+        <p>loadind...</p>
+      )}
+
       <AddCustomer
         newCustomer={newCustomer}
         show={show}

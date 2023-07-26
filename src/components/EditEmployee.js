@@ -38,6 +38,7 @@ function EditEmployee(props) {
           {/* inline form tags is inserted in the pop up modal body to collect input. 
           the template code for the inline form was taken from
           https://v1.tailwindcss.com/components/forms and edited to suit our need */}
+
           <form
             onSubmit={(e) => {
               //handleClose();
@@ -47,42 +48,51 @@ function EditEmployee(props) {
               props.updateEmployee(props.id, name, role); // new values entered in inline form by users are passed to the updateEmployee function for updates
             }}
             id="editmodal"
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            className="w-full max-w-sm"
           >
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                for="name"
-              >
-                name
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="EmployeeName"
-                type="text"
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
+            <div className="md:flex md:items-center mb-4">
+              <div className="md:w-1/4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  for="name" // set the id we want to associate this label with
+                >
+                  name
+                </label>
+              </div>
+              <div className="md:w-3/4">
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </div>
             </div>
 
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                for="role"
-              >
-                Role
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="EmployeeRole"
-                type="text"
-                value={role}
-                onChange={(e) => {
-                  setRole(e.target.value);
-                }} // onChange event handler helps to update the value typed
-              />
+            <div className="md:flex md:items-center mb-4">
+              <div className="md:w-1/4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  for="role" // set the id we want to associate this label with
+                >
+                  Role
+                </label>
+              </div>
+
+              <div className="md:w-3/4">
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  id="role"
+                  type="text"
+                  value={role}
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                  }} // onChange event handler helps to update the value typed
+                />
+              </div>
             </div>
           </form>
         </Modal.Body>
