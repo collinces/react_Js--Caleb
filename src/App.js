@@ -13,10 +13,15 @@ import Definition from "./pages/Definition";
 
 import NotFound from "./components/NotFound";
 import Customer from "./pages/Customer";
+import Login from "./pages/Login";
+import { createContext, useState } from "react";
+
+export const loginContext = createContext(); // export allows us to import this variable in other files
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(true);
   return (
-    <div>
+    <loginContext.Provider value={[loggedIn, setLoggedIn]}>
       <BrowserRouter>
         <Header>
           <Routes>
@@ -29,11 +34,13 @@ function App() {
 
             <Route path="/404" element={<NotFound />} />
 
+            {/* the * means throw the not found error for any page not existing */}
             <Route path="*" element={<NotFound />} />
+            <Route path="/Login" element={<Login />} />
           </Routes>
         </Header>
       </BrowserRouter>
-    </div>
+    </loginContext.Provider>
   );
 }
 

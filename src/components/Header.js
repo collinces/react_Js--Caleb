@@ -1,24 +1,23 @@
 // code for this component is copied from https://tailwindui.com/components/application-ui/navigation/navbars
 
-import { Fragment } from "react";
-
+import { useContext, useEffect } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-
 import { NavLink } from "react-router-dom";
+import { loginContext } from "../App";
 
 const navigation = [
   { name: "Employees", href: "/Employees" },
-
   { name: "Customers", href: "/Customers" },
-
-  { name: "Projects", href: "/Projects" },
-
   { name: "Dictionary", href: "/Dictionary" },
 ];
 
 export default function Header(props) {
+  const [loggedIn, setLoggedIn] = useContext(loginContext);
+
+  useEffect(() => {
+    console.log(loggedIn);
+  });
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -48,11 +47,11 @@ export default function Header(props) {
                       alt="Your Company"
                     />
 
-                    <img
+                    {/* <img
                       className="hidden h-8 w-auto lg:block"
                       src="https://images.fastcompany.net/image/upload/w_596,c_limit,q_auto:best,f_auto/wp-cms/uploads/2018/04/4-you-might-not-notice-amex-new-brand.jpg"
                       alt="Your Company"
-                    />
+                    /> */}
                   </div>
 
                   <div className="hidden sm:ml-6 sm:block">
@@ -77,6 +76,13 @@ export default function Header(props) {
                           {item.name}
                         </NavLink>
                       ))}
+
+                      <NavLink
+                        className="rounded-md px-3 py-2 text-sm font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                        to={loggedIn ? "/logout" : "/login"}
+                      >
+                        {loggedIn ? "Logout" : "Login"}
+                      </NavLink>
                     </div>
                   </div>
                 </div>
@@ -118,6 +124,13 @@ export default function Header(props) {
                     {item.name}
                   </NavLink>
                 ))}
+
+                <NavLink
+                  className="block rounded-md px-3 py-2 text-base font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                  to={loggedIn ? "/logout" : "login"}
+                >
+                  {loggedIn ? "Logout" : "Login"}
+                </NavLink>
               </div>
             </Disclosure.Panel>
 

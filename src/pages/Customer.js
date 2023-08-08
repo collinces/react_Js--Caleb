@@ -1,44 +1,66 @@
-import React from "react";
-import { useParams, Link, useNavigate, json } from "react-router-dom";
-import { useState, useEffect } from "react";
+import {
+  useParams,
+  Link,
+  useNavigate,
+  json,
+  useLocation,
+} from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import NotFound from "../components/NotFound";
 import { basedUrl } from "../Shared";
+import { loginContext } from "../App";
 
 function Customer() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const [customer, setCustomer] = useState();
   const [tempCustomer, setTempCustomer] = useState();
   const [notfound, setNotfound] = useState();
   const [change, setChange] = useState(false);
   const [error, setError] = useState();
 
+  const [loggedIn, setLoggedIn] = useContext(loginContext);
+
   const url = basedUrl + "/api/customers/" + id;
 
   useEffect(() => {
     // this useEffect execute second at lunch
-    if (!customer) return;
+    if (!customer) return; // if no customer return back
     if (!tempCustomer) return;
 
     let equal = true;
     if (customer.name !== tempCustomer.name) {
+      // if the customer name in backend db is different from frontend then set equality to false
       equal = false;
     }
     if (customer.industry !== tempCustomer.industry) {
+      // same here
       equal = false;
     }
     if (equal) {
+      // equal = true means there was no change in customer name or industry
       setChange(false);
     }
   });
 
   useEffect(() => {
     // this useEffect execute first at lunch
-    fetch(url) // go to database api and fetch customer data
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
+    }) // go to database api and fetch customer data
       .then((response) => {
         if (response.status === 404) {
           //navigate("/404/");
           setNotfound(true);
+        } else if (response.status === 401) {
+          setLoggedIn(false);
+          navigate("/login", { state: { previousUrl: location.pathname } });
         }
 
         if (!response.ok) {
@@ -65,19 +87,27 @@ function Customer() {
 
     fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+      },
       body: JSON.stringify(tempCustomer),
     })
       .then((response) => {
+        if (response.status === 401) {
+          setLoggedIn(false);
+          navigate("/login", { state: { previousUrl: location.pathname } });
+        }
         if (!response.ok) {
           throw new Error("request did not go through");
         }
         return json.response;
       })
       .then(() => {
-        setCustomer(tempCustomer);
-        setChange(false);
-        setError(undefined);
+        setCustomer(tempCustomer); // update customer value
+        setChange(false); // after updating set the change to false so save button and cancel button are not displayed
+        setError(undefined); // clear error message
       })
       .catch((e) => {
         console.log(e);
@@ -170,9 +200,19 @@ function Customer() {
               onClick={(e) => {
                 fetch(url, {
                   method: "DELETE",
-                  headers: { "Content-Type": "application/json" },
+                  headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("access")}`,
+                  },
                 })
                   .then((response) => {
+                    if (response.status === 401) {
+                      setLoggedIn(false);
+                      navigate("/login", {
+                        state: { previousUrl: location.pathname },
+                      });
+                    }
                     if (!response.ok) {
                       throw new Error(
                         "cannot delete: backend api not accessible"
