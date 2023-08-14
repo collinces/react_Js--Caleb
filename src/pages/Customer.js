@@ -178,7 +178,7 @@ function Customer() {
                   onClick={(e) => {
                     setTempCustomer({ ...customer }); // if cancel restore initial value displayed in input box
                     setChange(false); // mark the change as false
-                    setError(undefined);
+                    setError(undefined); // to say do not display any error message if ok
                   }}
                 >
                   Cancel
@@ -208,9 +208,9 @@ function Customer() {
                 })
                   .then((response) => {
                     if (response.status === 401) {
-                      setLoggedIn(false);
+                      setLoggedIn(false); // if trying to delete wihtout being logged in, set loggedIn to false and redirect user to login page
                       navigate("/login", {
-                        state: { previousUrl: location.pathname },
+                        state: { previousUrl: location.pathname }, // after logged in redirect user to this location
                       });
                     }
                     if (!response.ok) {
@@ -219,7 +219,7 @@ function Customer() {
                       );
                     }
 
-                    navigate("/Customers/");
+                    navigate("/Customers/"); // navigate to this link after succesful delete
                   })
 
                   .catch((e) => {

@@ -1,0 +1,5 @@
+**** Destructuring principle to avoid misalignments when passing values between functions **********
+
+    - when passing values back and forth it is better to use objects {}, than arry[]
+    - but with object, variables names have to be the same, so order in which they are passed does not matter
+    - with array, values are passed based on position or order in the array, so name do not matter

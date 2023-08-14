@@ -1,27 +1,40 @@
-import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { basedUrl } from "../Shared";
 import { loginContext } from "../App";
 
-function Login() {
+function Register() {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
+  const [email, setEmail] = useState();
   const [error, setError] = useState();
 
   const navigate = useNavigate();
   const location = useLocation(); // contains state object of navigate. helps to navigate to previous page specify in state object
   const [loggedIn, setLoggedIn] = useContext(loginContext);
 
-  const url = basedUrl + "api/token/";
+  const url = basedUrl + "api/register/";
+
+  // useEffect to log users out when they visit this page
+  useEffect(() => {
+    localStorage.clear();
+    setLoggedIn(false);
+  }, []);
 
   function login(e) {
     e.preventDefault(); // prevent the page to refresh
 
     fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: username, password: password }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        email: email,
+      }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -53,11 +66,29 @@ function Login() {
       <form className="w-full max-w-sm" id="login" onSubmit={login}>
         <div className="md:flex md:items-center mb-4">
           <div className="md:w-1/4">
+            <label for="email">Email</label>
+          </div>
+
+          <div className="md:w-3/5">
+            <input // input box for email
+              id="email"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="email"
+              value={email} // save input value into username
+              onChange={(e) => {
+                setEmail(e.target.value); // pass value entered to username by using its setUsername
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="md:flex md:items-center mb-4">
+          <div className="md:w-1/4">
             <label for="username">Username</label>
           </div>
 
           <div className="md:w-3/5">
-            <input // input box for customer.name
+            <input // input box for username
               id="username"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               type="text"
@@ -91,11 +122,11 @@ function Login() {
           className=" bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
           onClick={login}
         >
-          Login
+          Register
         </button>
       </form>
     </div>
   );
 }
 
-export default Login;
+export default Register;

@@ -3,17 +3,34 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { basedUrl } from "../Shared";
 import AddCustomer from "../components/AddCustomer";
 import { loginContext } from "../App";
+import useFetch from "../hooks/UseFetch";
 
 function Customers() {
   const url = basedUrl + "api/customers/";
-  const [customers, setCustomers] = useState();
+  //const [customers, setCustomers] = useState();
   const [show, setShow] = useState(); // by default show = undefined
 
   const navigate = useNavigate();
   const location = useLocation();
   const [loggedIn, setLoggedIn] = useContext(loginContext); // initialiase loggedIn to loginContext(true)
 
+  const {
+    data: { customers } = {}, // grab props customers in data, initialize to empty
+    errorStatus,
+  } = useFetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access")}`,
+    },
+  });
+
   useEffect(() => {
+    console.log(customers, errorStatus);
+  });
+
+  /*useEffect(() => {
     fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +51,7 @@ function Customers() {
         // data contains customers list
         setCustomers(data.customers);
       });
-  }, []);
+  }, []);*/
 
   function toggleshow() {
     setShow(!show); //
@@ -42,6 +59,7 @@ function Customers() {
 
   // this function add a new customer component
   function newCustomer(name, industry) {
+    /*
     const infos = {
       name: name,
       industry: industry,
@@ -68,7 +86,7 @@ function Customers() {
 
       .catch((e) => {
         console.log(e);
-      });
+      });*/
   }
 
   return (
@@ -76,7 +94,7 @@ function Customers() {
       <h1>list of customers and their industries</h1>
 
       {customers ? ( // is there any customer in customers array
-        <>
+        <div>
           {customers.map((customer) => {
             return (
               <div className="m-2" key={customer.id}>
@@ -88,7 +106,7 @@ function Customers() {
               </div>
             );
           })}
-        </>
+        </div>
       ) : (
         <p>loadind...</p>
       )}

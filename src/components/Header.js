@@ -13,11 +13,9 @@ const navigation = [
 ];
 
 export default function Header(props) {
-  const [loggedIn, setLoggedIn] = useContext(loginContext);
+  const [loggedIn, setLoggedIn] = useContext(loginContext); // we create a useContext state variable and we pass loginContext. so by correspondance
+  // loggedIn--> loggedIn, setLoggedIn --> changeLoggedIn
 
-  useEffect(() => {
-    console.log(loggedIn);
-  });
   return (
     <>
       <Disclosure as="nav" className="bg-gray-800">
@@ -77,12 +75,28 @@ export default function Header(props) {
                         </NavLink>
                       ))}
 
-                      <NavLink
-                        className="rounded-md px-3 py-2 text-sm font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
-                        to={loggedIn ? "/logout" : "/login"}
-                      >
-                        {loggedIn ? "Logout" : "Login"}
-                      </NavLink>
+                      {loggedIn ? (
+                        <NavLink
+                          onClick={() => {
+                            setLoggedIn(false);
+                            //localStorage.clear(); // deteleting the access/refresh token because we are logged out
+                          }}
+                          className="rounded-md px-3 py-2 text-sm font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                          to={"/Login"}
+                        >
+                          Logout
+                        </NavLink>
+                      ) : (
+                        <NavLink
+                          onClick={() => {
+                            //setLoggedIn(true);
+                          }}
+                          className="rounded-md px-3 py-2 text-sm font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                          to={"/Login"}
+                        >
+                          Login
+                        </NavLink>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -125,12 +139,27 @@ export default function Header(props) {
                   </NavLink>
                 ))}
 
-                <NavLink
-                  className="block rounded-md px-3 py-2 text-base font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
-                  to={loggedIn ? "/logout" : "login"}
-                >
-                  {loggedIn ? "Logout" : "Login"}
-                </NavLink>
+                {loggedIn ? (
+                  <NavLink
+                    onClick={() => {
+                      setLoggedIn(false);
+                    }}
+                    className="block rounded-md px-3 py-2 text-base font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                    to={"/Login"}
+                  >
+                    Logout
+                  </NavLink>
+                ) : (
+                  <NavLink
+                    onClick={() => {
+                      //setLoggedIn(true);
+                    }}
+                    className="block rounded-md px-3 py-2 text-base font-medium no-underline text-gray-300 hover:bg-gray-700 hover:text-white"
+                    to={"/Login"}
+                  >
+                    Login
+                  </NavLink>
+                )}
               </div>
             </Disclosure.Panel>
 
