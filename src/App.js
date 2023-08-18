@@ -44,7 +44,6 @@ function App() {
             localStorage.access = data.access;
             localStorage.refresh = data.refresh;
             setLoggedIn(true);
-            console.log(data);
           });
       }
     }

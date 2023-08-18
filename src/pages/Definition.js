@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import { useNavigate, useParams, Link } from "react-router-dom";
 
@@ -10,19 +10,19 @@ import NotFound from "../components/NotFound";
 import useFetch from "../hooks/UseFetch";
 
 function Definition() {
-  //const [word, setWord] = useState();
-
-  //const [notfound, setNotfound] = useState(false);
-
-  //const [serverError, setServerError] = useState(false);
-
-  //const [error, setError] = useState(false);
-
   let { search } = useParams();
 
   const navigate = useNavigate();
   const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + search;
-  const [word, errorStatus] = useFetch(url);
+  const {
+    request,
+    data: [{ meanings: word }] = [{}],
+    errorStatus,
+  } = useFetch(url);
+
+  useEffect(() => {
+    request(); // display the page
+  });
 
   if (errorStatus === 404) {
     return (
@@ -46,11 +46,11 @@ function Definition() {
 
   return (
     <div>
-      {word?.[0]?.meanings ? (
+      {word ? (
         <>
           <h1>definition of word typed here: </h1>
 
-          {word[0].meanings.map((meaning) => {
+          {word.map((meaning) => {
             return (
               <p key={uuidv4()}>
                 {meaning.partOfSpeech} : {meaning.definitions[0].definition}

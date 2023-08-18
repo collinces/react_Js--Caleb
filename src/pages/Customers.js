@@ -10,11 +10,11 @@ function Customers() {
   //const [customers, setCustomers] = useState();
   const [show, setShow] = useState(); // by default show = undefined
 
-  const navigate = useNavigate();
-  const location = useLocation();
   const [loggedIn, setLoggedIn] = useContext(loginContext); // initialiase loggedIn to loginContext(true)
 
   const {
+    request,
+    appendData,
     data: { customers } = {}, // grab props customers in data, initialize to empty
     errorStatus,
   } = useFetch(url, {
@@ -22,36 +22,17 @@ function Customers() {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("access")}`,
+      Authorization: `Bearer ${localStorage.getItem("access")}`, // passing authorization request token
     },
   });
 
   useEffect(() => {
-    console.log(customers, errorStatus);
-  });
+    request(); // display customers list
+  }, []);
 
-  /*useEffect(() => {
-    fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-      },
-    })
-      .then((response) => {
-        if (response.status === 401) {
-          setLoggedIn(false);
-          // state object represent the url we want to go after logged in which in this case is /Customers = location.pathname
-          navigate("/login", { state: { previousUrl: location.pathname } });
-        }
-        return response.json(); // return customers list
-      })
-
-      .then((data) => {
-        // data contains customers list
-        setCustomers(data.customers);
-      });
-  }, []);*/
+  // useEffect(() => {
+  //   console.log(request, appendData, customers, errorStatus);
+  // });
 
   function toggleshow() {
     setShow(!show); //
@@ -59,34 +40,11 @@ function Customers() {
 
   // this function add a new customer component
   function newCustomer(name, industry) {
-    /*
-    const infos = {
-      name: name,
-      industry: industry,
-    };
+    appendData({ name: name, industry: industry });
 
-    fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(infos),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Not able to add new customer");
-        }
-
-        return response.json();
-      })
-
-      .then((data) => {
-        toggleshow();
-        setCustomers([...customers, data.customer]);
-        // we get the customers array and we add new customer to array by data.customer
-      })
-
-      .catch((e) => {
-        console.log(e);
-      });*/
+    if (!errorStatus) {
+      toggleshow(); // pop up modal disappear after we add new customer
+    }
   }
 
   return (

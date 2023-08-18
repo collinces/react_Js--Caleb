@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-function useFetch(url, { method, headers, body }) {
+function useFetch(url, { method, headers, body } = {}) {
   const [data, setData] = useState();
   const [errorStatus, setErrorStatus] = useState();
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
+  function request() {
     fetch(url, {
       method: method,
       headers: headers,
@@ -30,8 +30,42 @@ function useFetch(url, { method, headers, body }) {
       .catch((e) => {
         setErrorStatus(e);
       });
-  }, []);
-  return { data, errorStatus }; // returning an object instead of an array is called destructuring
+  }
+
+  function appendData(newData) {
+    fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(newData),
+    })
+      .then((response) => {
+        //checking the response code
+        if (response.status === 401) {
+          navigate("/login", { state: { previousUrl: location.pathname } });
+        }
+        if (!response.ok) {
+          throw response.status;
+        }
+
+        return response.json();
+      })
+
+      .then((d) => {
+        const submitted = Object.values(d)[0]; // getting the new added customer without using customer name property;
+        const newState = { ...data }; // newState is a duplicate in memory of customers array called data above
+
+        Object.values(newState)[0].push(submitted); // we push the added customer(submitted) into the duplicate
+        setData(newState); // we update the customers array
+      })
+
+      .catch((e) => {
+        console.log(e);
+        setErrorStatus(e);
+      });
+
+    console.log("inside appendData:", newData);
+  }
+  return { request, appendData, data, errorStatus }; // returning an object instead of an array is called destructuring
 }
 
 export default useFetch;
